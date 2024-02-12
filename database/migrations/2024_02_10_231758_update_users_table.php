@@ -30,18 +30,30 @@ class UpdateUsersTable extends Migration
             if (!Schema::hasColumn('users', 'active')) {
                 $table->boolean('active')->default(true);
             }
-            
+
             // Verifica se a coluna area_id não existe antes de adicioná-la
             if (!Schema::hasColumn('users', 'area_id')) {
                 // Adiciona a coluna area_id
                 $table->unsignedBigInteger('area_id')->nullable()->after('name');
-                
+
                 // Define a chave estrangeira que referencia a tabela areas
                 $table->foreign('area_id')->references('id')->on('areas')->onDelete('set null');
             }
 
+            // Adicionando a coluna parent_id
+            if (!Schema::hasColumn('users', 'parent_id')) {
+                $table->unsignedBigInteger('parent_id')->nullable()->after('id'); // Adiciona a coluna parent_id após a coluna id
+
+                // Define parent_id como chave estrangeira referenciando o próprio id na tabela users
+                $table->foreign('parent_id')->references('id')->on('users')->onDelete('set null');
+            }
+
+           
         });
+
+       
     }
+
 
     public function down()
     {
@@ -49,7 +61,7 @@ class UpdateUsersTable extends Migration
             // Remover as colunas adicionadas
             $table->dropForeign(['area_id']);
             $table->dropColumn(['salt', 'phone', 'pontuacao', 'role', 'active', 'area_id']);
-            
+
             // Reverter a remoção de colunas, se necessário, adicionando-as novamente
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('usuario_id')->nullable();

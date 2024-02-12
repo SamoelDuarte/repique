@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\ChatBotController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\EventsController;
@@ -31,6 +32,12 @@ Route::prefix('/')->controller(AdminController::class)->group(function () {
 Route::prefix('/events')->controller(EventsController::class)->group(function () {
     Route::post('/', 'index')->name('admin.events.index');
     Route::get('/teste', 'teste');
+});
+
+
+Route::prefix('/app')->controller(AppController::class)->group(function () {
+    Route::post('/', 'index');
+    Route::post('/retorna_ultimos_calculos', 'ultimosCalculos');
 });
 
 
