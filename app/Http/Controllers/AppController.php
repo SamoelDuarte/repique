@@ -21,6 +21,6 @@ class AppController extends Controller
     $array[] = array('total' => '10.00','data' => '11-02-1990');
       
        // Retornar os resultados como uma resposta JSON
-       return response()->json($array);
+       return response()->json($request->all());
    }
 }
