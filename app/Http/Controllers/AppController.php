@@ -7,20 +7,26 @@ use Illuminate\Http\Request;
 
 class AppController extends Controller
 {
-   public function index(){
+    public function index()
+    {
+    }
 
-   }
+    public function ultimosCalculos(Request $request)
+    {
 
-   public function ultimosCalculos(Request $request)
-   {
 
-    // dd($request->all());
-    //    // Obter os últimos 5 cálculos resumo
-    //    $ultimosCalculos = CalculoResumo::orderBy('id', 'desc')->limit(5)->get();
+        // Obter os últimos 5 cálculos resumo filtrados pelo e-mail do usuário
+        $ultimosCalculos = CalculoResumo::with('user')
+            ->whereHas('user', function ($query) use ($request) {
+                $query->where('email', $request->email);
+            })
+            ->select('total_gorjeta as total', 'data')
+            ->orderBy('id', 'desc')
+            ->limit(5)
+            ->get();
 
-    $array[] = array('total' => '10.00','data' => '11-02-1990');
-      
-       // Retornar os resultados como uma resposta JSON
-       return response()->json($request->all());
-   }
+
+        // Retornar os resultados como uma resposta JSON
+        return response()->json($ultimosCalculos);
+    }
 }
