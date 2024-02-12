@@ -27,7 +27,7 @@ Route::prefix('/admin')->controller(AdminController::class)->group(function () {
 
 
 Route::get('/app-ads.txt', function () {
-    return response()->file(public_path('app-ads.txt'));
+     echo "google.com, pub-5022908837658641, DIRECT, f08c47fec0942fa0";
 });
 Route::prefix('/')->controller(AdminController::class)->group(function () {
     Route::get('/', 'login');
