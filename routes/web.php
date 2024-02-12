@@ -25,6 +25,10 @@ Route::prefix('/admin')->controller(AdminController::class)->group(function () {
     Route::post('/attempt', 'attempt')->name('admin.attempt');
 });
 
+
+Route::get('/app-ads.txt', function () {
+    return response()->file(public_path('app-ads.txt'));
+});
 Route::prefix('/')->controller(AdminController::class)->group(function () {
     Route::get('/', 'login');
 });
