@@ -25,10 +25,10 @@ Route::prefix('/admin')->controller(AdminController::class)->group(function () {
     Route::post('/attempt', 'attempt')->name('admin.attempt');
 });
 
-
 Route::get('/app-ads.txt', function () {
-     echo "google.com, pub-5022908837658641, DIRECT, f08c47fec0942fa0";
+    echo "google.com, pub-5022908837658641, DIRECT, f08c47fec0942fa0";
 });
+
 Route::prefix('/')->controller(AdminController::class)->group(function () {
     Route::get('/', 'login');
 });
@@ -42,6 +42,7 @@ Route::prefix('/events')->controller(EventsController::class)->group(function ()
 Route::prefix('/app')->controller(AppController::class)->group(function () {
     Route::post('/', 'index');
     Route::post('/retorna_ultimos_calculos', 'ultimosCalculos');
+    Route::post('/retorna_colaboradores', 'getColaboradores');
 });
 
 

@@ -51,4 +51,8 @@ class User extends Model
     {
         return empty($this->picture) ? '/assets/images/no-photo.png' : '/assets/images/users/' . $this->picture;
     }
+    public function area()
+{
+    return $this->belongsTo(Area::class, 'area_id');
+}
 }

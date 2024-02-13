@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\CalculoResumo;
+use App\Models\Colaborador;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AppController extends Controller
@@ -29,4 +31,34 @@ class AppController extends Controller
         // Retornar os resultados como uma resposta JSON
         return response()->json($ultimosCalculos);
     }
+
+    public function getColaboradores(Request $request)
+{
+    $user = User::where('email', $request->email)->first();
+
+    if ($user) {
+        $usersWithSameParentId = User::where('parent_id', $user->id)->get();
+
+        
+        $colaboradores = [];
+        foreach ($usersWithSameParentId as $userItem) {
+            $colaborador = new Colaborador();
+           
+            $colaborador = array(
+                "id" =>  $userItem->id,
+                "nome" =>  $userItem->name,
+                "area" =>  $userItem->area->nome,
+                "pontuacao" => $userItem->pontuacao,
+            );
+
+            $colaboradores[] = $colaborador;
+          
+        }
+        // dd($colaboradores);
+        return response()->json($colaboradores);
+    } else {
+        return response()->json(['error' => 'Usuário não encontrado'], 404);
+    }
+}
+
 }
