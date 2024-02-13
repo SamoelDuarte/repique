@@ -113,14 +113,34 @@ class AppController extends Controller
         }
     }
 
-    public function getCalculos(){
-        $colaboradores[] = array(
-            'id'=> '1',
-            'area'=> 'salao',
-            'pontuacao'=> '12',
-            'valor'=> '20',
-            'nome'=> 'samoel',
-        );
-        return response()->json($colaboradores);
+    public function getCalculos(Request $request){
+
+
+        // Encontrar o usuário com base no e-mail fornecido na solicitação
+        $user = User::where('email', $request->email)->first();
+        
+        // Se o usuário existir, encontrar o CalculoResumo com a data e o user_id fornecidos
+        if ($user) {
+            $calculoResumo = CalculoResumo::where('data', $request->data)
+                ->where('user_id', $user->id)
+                ->first();
+        
+            // Se o CalculoResumo existir, obter os cálculos associados a ele
+            if ($calculoResumo) {
+                $calculos = Calculo::whereHas('calculoResumo', function ($query) use ($request, $user) {
+                    $query->where('data', $request->data)
+                        ->where('user_id', $user->id);
+                })->get();
+        
+                // Faça algo com os cálculos encontrados, como retorná-los como resposta JSON
+                return response()->json($calculos);
+            } else {
+                // Se o CalculoResumo não existir, retorne uma resposta indicando que não foram encontrados cálculos para a data e o usuário fornecidos
+                return response()->json(['message' => 'Não foram encontrados cálculos para a data e o usuário fornecidos'], 404);
+            }
+        } else {
+            // Se o usuário não existir, retorne uma resposta indicando que o usuário não foi encontrado
+            return response()->json(['message' => 'Usuário não encontrado'], 404);
+        }
     }
 }
