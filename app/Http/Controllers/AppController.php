@@ -143,6 +143,7 @@ class AppController extends Controller
                         'area' => $calculo->user->area->nome, // Supondo que o usuário tenha um atributo 'area'
                         'pontuacao' => $calculo->user->pontuacao, // Supondo que o usuário tenha um atributo 'pontuacao'
                         'valor' => $calculo->valor,
+                        'data' => $request->data
                     ];
 
                     // Adicionar o array do colaborador ao array principal
