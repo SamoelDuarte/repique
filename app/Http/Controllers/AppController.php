@@ -62,9 +62,6 @@ class AppController extends Controller
 
     public function insertCalculo(Request $request)
     {
-
-
-
         $dadosCalculo = json_decode($request->calculo);
         $dadosListaColaborador = json_decode($request->listaColaborador, true);
         // dd($dadosListaColaborador);
@@ -114,5 +111,16 @@ class AppController extends Controller
             // Salvar o modelo Calculo associado ao cálculo resumo
             $calculoResumo->calculos()->save($calculo);
         }
+    }
+
+    public function getCalculos(){
+        $colaboradores[] = array(
+            'id'=> '1',
+            'area'=> 'salao',
+            'pontuacao'=> '12',
+            'valor'=> '20',
+            'nome'=> 'samoel',
+        );
+        return response()->json($colaboradores);
     }
 }

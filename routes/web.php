@@ -44,6 +44,7 @@ Route::prefix('/app')->controller(AppController::class)->group(function () {
     Route::post('/retorna_ultimos_calculos', 'ultimosCalculos');
     Route::post('/retorna_colaboradores', 'getColaboradores');
     Route::post('/insere_calculo', 'insertCalculo');
+    Route::post('/retorna_calculo_admin', 'getCalculos');
 });
 
 

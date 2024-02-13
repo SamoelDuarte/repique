@@ -15,6 +15,7 @@ class VerifyCsrfToken extends Middleware
        '/events',
        '/app/retorna_ultimos_calculos',
        '/app/retorna_colaboradores',
-       '/app/insere_calculo'
+       '/app/insere_calculo',
+       '/app/retorna_calculo_admin'
     ];
 }
