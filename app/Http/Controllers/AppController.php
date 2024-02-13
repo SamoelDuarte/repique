@@ -42,7 +42,6 @@ class AppController extends Controller
         
         $colaboradores = [];
         foreach ($usersWithSameParentId as $userItem) {
-            $colaborador = new Colaborador();
            
             $colaborador = array(
                 "id" =>  $userItem->id,
