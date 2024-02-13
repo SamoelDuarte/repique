@@ -25,6 +25,7 @@ return new class extends Migration
             // Insere na tabela users
             if ($user) {
                 DB::table('users')->insert([
+                    'id' => $colaborador->id,
                     'name' => $colaborador->nome,
                     'area_id' => $areaId,
                     'parent_id' => $user->id,

@@ -12,7 +12,7 @@ class Calculo extends Model
 
     protected $fillable = [
         'calculoresumo_id',
-        'id_colaborador',
+        'colaborador_id',
         'valor'
     ];
 
@@ -20,5 +20,11 @@ class Calculo extends Model
     public function calculoResumo()
     {
         return $this->belongsTo(CalculoResumo::class, 'calculoresumo_id');
+    }
+
+    // Relacionamento com User
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'colaborador_id');
     }
 }

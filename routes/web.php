@@ -43,6 +43,7 @@ Route::prefix('/app')->controller(AppController::class)->group(function () {
     Route::post('/', 'index');
     Route::post('/retorna_ultimos_calculos', 'ultimosCalculos');
     Route::post('/retorna_colaboradores', 'getColaboradores');
+    Route::post('/insere_calculo', 'insertCalculo');
 });
 
 

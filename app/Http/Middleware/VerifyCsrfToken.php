@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
        '/events',
        '/app/retorna_ultimos_calculos',
-       '/app/retorna_colaboradores'
+       '/app/retorna_colaboradores',
+       '/app/insere_calculo'
     ];
 }

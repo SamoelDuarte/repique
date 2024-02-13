@@ -30,5 +30,10 @@ class CalculoResumo extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function calculos()
+    {
+        return $this->hasMany(Calculo::class, 'calculoresumo_id');
+    }
+
     
 }

@@ -29,12 +29,12 @@ class User extends Model
     ];
     protected $hidden = ['password', 'salt'];
 
-    
+
 
     public function getShortNameAttribute()
     {
         $exclude = [' de ', ' da ', ' do ', ' dos ', ' e '];
-        $nameBrokenIntoParts = explode(" ", str_replace($exclude, " ", $this->fist_name.$this->last_name));
+        $nameBrokenIntoParts = explode(" ", str_replace($exclude, " ", $this->fist_name . $this->last_name));
         if (count($nameBrokenIntoParts) > 1) {
             return $nameBrokenIntoParts[0] . " " . $nameBrokenIntoParts[count($nameBrokenIntoParts) - 1];
         }
@@ -43,8 +43,8 @@ class User extends Model
 
     public function getFullNameAttribute()
     {
-        
-        return $this->first_name.' '.$this->last_name;
+
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     public function getPicturePathAttribute()
@@ -52,7 +52,11 @@ class User extends Model
         return empty($this->picture) ? '/assets/images/no-photo.png' : '/assets/images/users/' . $this->picture;
     }
     public function area()
-{
-    return $this->belongsTo(Area::class, 'area_id');
-}
+    {
+        return $this->belongsTo(Area::class, 'area_id');
+    }
+    public function calculosResumo()
+    {
+        return $this->hasMany(CalculoResumo::class, 'user_id');
+    }
 }
