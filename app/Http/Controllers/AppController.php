@@ -113,27 +113,43 @@ class AppController extends Controller
         }
     }
 
-    public function getCalculos(Request $request){
+    public function getCalculos(Request $request)
+    {
 
 
         // Encontrar o usuário com base no e-mail fornecido na solicitação
         $user = User::where('email', $request->email)->first();
-        
+
         // Se o usuário existir, encontrar o CalculoResumo com a data e o user_id fornecidos
         if ($user) {
             $calculoResumo = CalculoResumo::where('data', $request->data)
                 ->where('user_id', $user->id)
                 ->first();
-        
+
             // Se o CalculoResumo existir, obter os cálculos associados a ele
             if ($calculoResumo) {
                 $calculos = Calculo::whereHas('calculoResumo', function ($query) use ($request, $user) {
                     $query->where('data', $request->data)
                         ->where('user_id', $user->id);
                 })->get();
-        
+                $jsonArray = [];
+
+                // Iterar sobre os resultados retornados
+                foreach ($calculos as $calculo) {
+                    // Criar um array associativo para cada cálculo
+                    $colaborador = [
+                        'id' => $calculo->id,
+                        'nome' => $calculo->user->name, // Você precisa acessar a relação user para obter o nome do usuário
+                        'area' => $calculo->user->area, // Supondo que o usuário tenha um atributo 'area'
+                        'pontuacao' => $calculo->user->pontuacao, // Supondo que o usuário tenha um atributo 'pontuacao'
+                        'valor' => $calculo->valor,
+                    ];
+
+                    // Adicionar o array do colaborador ao array principal
+                    $jsonArray[] = $colaborador;
+                }
                 // Faça algo com os cálculos encontrados, como retorná-los como resposta JSON
-                return response()->json($calculos);
+                return response()->json($jsonArray);
             } else {
                 // Se o CalculoResumo não existir, retorne uma resposta indicando que não foram encontrados cálculos para a data e o usuário fornecidos
                 return response()->json(['message' => 'Não foram encontrados cálculos para a data e o usuário fornecidos'], 404);
