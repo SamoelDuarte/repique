@@ -140,7 +140,7 @@ class AppController extends Controller
                     $colaborador = [
                         'id' => $calculo->id,
                         'nome' => $calculo->user->name, // Você precisa acessar a relação user para obter o nome do usuário
-                        'area' => $calculo->user->area, // Supondo que o usuário tenha um atributo 'area'
+                        'area' => $calculo->user->area->nome, // Supondo que o usuário tenha um atributo 'area'
                         'pontuacao' => $calculo->user->pontuacao, // Supondo que o usuário tenha um atributo 'pontuacao'
                         'valor' => $calculo->valor,
                     ];
