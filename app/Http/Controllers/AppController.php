@@ -62,12 +62,26 @@ class AppController extends Controller
 
     public function insertCalculo(Request $request)
     {
+
+
+
         $dadosCalculo = json_decode($request->calculo);
         $dadosListaColaborador = json_decode($request->listaColaborador, true);
-
-
         // dd($dadosListaColaborador);
         $user = User::where('email', $request->email)->first();
+        // Encontrar o CalculoResumo existente com a mesma data e usuário
+        $calculoresumoExistente = CalculoResumo::where('user_id', $user->id)
+            ->where('data', $dadosCalculo->data_calculo_envia)
+            ->first();
+
+
+        // Se o CalculoResumo existir, exclua-o
+        if ($calculoresumoExistente) {
+            $calculoresumoExistente->calculos()->delete(); // Exclui todos os cálculos associados
+            $calculoresumoExistente->delete(); // Em seguida, exclui o CalculoResumo
+        }
+
+
 
         // Criar uma instância do modelo CalculoResumo
         $calculoResumo = new CalculoResumo([
