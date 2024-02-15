@@ -28,11 +28,11 @@ class AdminController extends Controller
         // dd($user);
 
         if (!$user) {
-            return back()->withErrors("E-mail e/ou senha inválidos.")->withInput();
+            return back()->withErrors(['email' => 'E-mail Não Consta no Sistema.'])->withInput();
         }
 
         if (!Utils::passwordIsValid($request->password, $user->password, $user->salt)) {
-            return back()->withErrors("E-mail e/ou senha inválidos.")->withInput();
+            return back()->withErrors(['password' => 'Senha Inválida'])->withInput();
         }
 
         if ($user->role == "user") {
