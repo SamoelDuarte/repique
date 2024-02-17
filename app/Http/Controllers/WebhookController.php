@@ -10,7 +10,7 @@ class WebhookController extends Controller
 {
     public function send()
     {
-        $calculos = Calculo::where('send', 1)->limit(2)->get();
+        $calculos = Calculo::where('send', 1)->limit(5)->get();
 
         foreach ($calculos as $key => $calculo) {
             if ($calculo->user->phone) {
@@ -21,10 +21,11 @@ class WebhookController extends Controller
 
                 $evento->sendMessagem($device->session,$calculo->user->phone,"https://play.google.com/store/apps/details?id=br.com.repique");
 
-            } else {
-                $calculo->send = 0;
+                
+
+            } 
+            $calculo->send = 0;
                 $calculo->update();
-            }
         }
     }
 }
