@@ -13,6 +13,7 @@ class Calculo extends Model
     protected $fillable = [
         'calculoresumo_id',
         'colaborador_id',
+        'send',
         'valor'
     ];
 

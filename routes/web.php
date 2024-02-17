@@ -4,7 +4,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\ChatBotController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\Events;
 use App\Http\Controllers\EventsController;
+use App\Http\Controllers\WebhookController;
 use App\Models\ChatBot;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +27,10 @@ Route::prefix('/admin')->controller(AdminController::class)->group(function () {
     Route::post('/attempt', 'attempt')->name('admin.attempt');
 });
 
+Route::prefix('/webhook')->controller(WebhookController::class)->group(function () {
+    Route::get('/send', 'send');
+});
+
 Route::get('/app-ads.txt', function () {
     echo "google.com, pub-5022908837658641, DIRECT, f08c47fec0942fa0";
 });
@@ -37,7 +43,7 @@ Route::prefix('/')->controller(AdminController::class)->group(function () {
     Route::get('/', 'login');
 });
 
-Route::prefix('/events')->controller(EventsController::class)->group(function () {
+Route::prefix('/events')->controller(Events::class)->group(function () {
     Route::post('/', 'index')->name('admin.events.index');
     Route::get('/teste', 'teste');
 });
@@ -49,6 +55,7 @@ Route::prefix('/app')->controller(AppController::class)->group(function () {
     Route::post('/retorna_colaboradores', 'getColaboradores');
     Route::post('/insere_calculo', 'insertCalculo');
     Route::post('/retorna_calculo_admin', 'getCalculos');
+    Route::post('/retorna_ultimos_calculos_repique', 'ultimosCalculosRepique');
 });
 
 
@@ -73,3 +80,5 @@ Route::prefix('/admin')->controller(DeviceController::class)->group(function () 
         Route::get('/getStatus', 'getStatus');
     });
 });
+
+

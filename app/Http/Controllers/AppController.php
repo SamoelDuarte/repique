@@ -33,6 +33,34 @@ class AppController extends Controller
         return response()->json($ultimosCalculos);
     }
 
+    public function ultimosCalculosRepique(Request $request)
+    {
+
+        // Obter os últimos 5 cálculos resumo filtrados pelo e-mail do usuário
+        $ultimosCalculos = Calculo::with('user','calculoResumo')
+            ->whereHas('user', function ($query) use ($request) {
+                $query->where('email', $request->email);
+            })
+            ->orderBy('id', 'desc')
+            ->limit(5)
+            ->get();
+
+            $resultoCalculos = [];
+            foreach ($ultimosCalculos as $key => $ultimosCalculo) {
+                // dd($ultimosCalculo->calculoResumo->data);
+                $calculos = array(
+                    "valor" => $ultimosCalculo->valor,
+                    "data" => $ultimosCalculo->calculoResumo->data
+                );
+                $resultoCalculos[] = $calculos;
+            }
+      
+
+
+        // Retornar os resultados como uma resposta JSON
+        return response()->json($resultoCalculos);
+    }
+
     public function getColaboradores(Request $request)
     {
         $user = User::where('email', $request->email)->first();
@@ -105,7 +133,8 @@ class AppController extends Controller
             $calculo = new Calculo([
                 'calculoresumo_id' => $calculoResumo->id,
                 'colaborador_id' => $dadosColaborador['id'],
-                'valor' => $dadosColaborador['valor']
+                'valor' => $dadosColaborador['valor'],
+                'send' => 1
             ]);
 
             // Salvar o modelo Calculo associado ao cálculo resumo

@@ -14,7 +14,7 @@
     <p>O Aplicativo Repique coleta as seguintes informações:</p>
     <ul>
         <li>Informações de contato, como nome, endereço de e-mail e número de telefone.</li>
-        <li>Informações de pagamento necessárias para processar os repiques, como números de conta bancária ou informações de PayPal.</li>
+      
     </ul>
 
     <h2>2. Uso das Informações</h2>

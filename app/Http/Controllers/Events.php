@@ -8,7 +8,7 @@ use App\Models\Device;
 use Dflydev\DotAccessData\Util;
 use Illuminate\Http\Request;
 
-class EventsController extends Controller
+class Events extends Controller
 {
     public function index()
     {
@@ -56,10 +56,6 @@ class EventsController extends Controller
             $customer = Customers::where('jid',  $jid)
                 ->first();
 
-
-
-
-
             if (!$service) {
                 echo "Novo o atendimento criando chat </br>";
                 $service = new Chat();
@@ -78,14 +74,13 @@ class EventsController extends Controller
                 $service->save();
                 $this->sendMessagem($session->session, $customer->phone, $text);
                 exit;
-            }else{
-                if($service->await_answer != "init_chat"  ){
-                    $text = "Olá ". $customer->name." é bom ter voçê novamente aki! ";
+            } else {
+                if ($service->await_answer != "init_chat") {
+                    $text = "Olá " . $customer->name . " é bom ter voçê novamente aki! ";
                     $service->await_answer = "init_chat";
                     $service->save();
                     $this->sendMessagem($session->session, $customer->phone, $text);
                 }
-               
             }
 
 
@@ -139,22 +134,20 @@ class EventsController extends Controller
 
                 $response = $reponseArray['data']['message']['text'];
 
-                switch($response){
+                switch ($response) {
                     case  "1";
-                    $service->await_answer = "init_chat";
-                    $service->update();
-                    $text =  $customer->name ." \n  Seu cadastro foi Realizado \n com sucesso ";
-                    $this->sendMessagem($session->session, $customer->phone, $text);
-                    break;
+                        $service->await_answer = "init_chat";
+                        $service->update();
+                        $text =  $customer->name . " \n  Seu cadastro foi Realizado \n com sucesso ";
+                        $this->sendMessagem($session->session, $customer->phone, $text);
+                        break;
 
-                    case '2' ;
-                    $service->await_answer = "cep";
-                    $service->update();
-                    $text =  $customer->name ." \n Por favor Digite seu cep Novamente.";
-                    $this->sendMessagem($session->session, $customer->phone, $text);
-
+                    case '2';
+                        $service->await_answer = "cep";
+                        $service->update();
+                        $text =  $customer->name . " \n Por favor Digite seu cep Novamente.";
+                        $this->sendMessagem($session->session, $customer->phone, $text);
                 }
-
             }
         } else {
             'eu enviei ou é grupo';
@@ -163,7 +156,6 @@ class EventsController extends Controller
 
     public function sendMessagem($session, $phone, $texto)
     {
-
 
         $curl = curl_init();
 

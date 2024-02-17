@@ -36,7 +36,6 @@ class AdminController extends Controller
         }
 
         if ($user->role == "user") {
-            flash('Usuário não Cadastrado!')->error();
             return back();
         }
 
