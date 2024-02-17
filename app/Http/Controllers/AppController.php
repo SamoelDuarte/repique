@@ -49,7 +49,7 @@ class AppController extends Controller
             foreach ($ultimosCalculos as $key => $ultimosCalculo) {
                 // dd($ultimosCalculo->calculoResumo->data);
                 $calculos = array(
-                    "valor" => $ultimosCalculo->valor,
+                    "total" => $ultimosCalculo->valor,
                     "data" => $ultimosCalculo->calculoResumo->data
                 );
                 $resultoCalculos[] = $calculos;
