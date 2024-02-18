@@ -56,6 +56,7 @@ Route::prefix('/app')->controller(AppController::class)->group(function () {
     Route::post('/insere_calculo', 'insertCalculo');
     Route::post('/retorna_calculo_admin', 'getCalculos');
     Route::post('/retorna_ultimos_calculos_repique', 'ultimosCalculosRepique');
+    Route::post('/retorna_calculo_onda', 'dadosOnda');
 });
 
 

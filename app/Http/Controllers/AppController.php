@@ -189,4 +189,71 @@ class AppController extends Controller
             return response()->json(['message' => 'Usuário não encontrado'], 404);
         }
     }
+
+    public function dadosOnda(Request $request){
+        // Obter o primeiro dia do ano atual
+        $primeiroDiaAno = now()->startOfYear();
+        // Obter a data de hoje
+        $hoje = now();
+        
+        // Inicializar o array com os valores de todos os meses do ano, com valor zero
+        $meses = [
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 1, 1))) => 0, // JAN
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 2, 1))) => 0, // FEV
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 3, 1))) => 0, // MAR
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 4, 1))) => 0, // ABR
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 5, 1))) => 0, // MAI
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 6, 1))) => 0, // JUN
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 7, 1))) => 0, // JUL
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 8, 1))) => 0, // AGO
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 9, 1))) => 0, // SET
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 10, 1))) => 0, // OUT
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 11, 1))) => 0, // NOV
+            utf8_encode(strftime('%b', mktime(0, 0, 0, 12, 1))) => 0, // DEZ
+        ];
+    
+        // Obter os últimos cálculos resumo filtrados pelo e-mail do usuário e restritos ao período de tempo especificado
+        $ultimosCalculos = Calculo::with('user', 'calculoResumo')
+            ->whereHas('user', function ($query) use ($request) {
+                $query->where('email', $request->email);
+            })
+            ->whereHas('calculoResumo', function ($query) use ($primeiroDiaAno, $hoje) {
+                $query->whereBetween('data', [$primeiroDiaAno, $hoje]);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
+    
+
+          
+        // Agrupar os cálculos resumo por mês e calcular o total para cada mês
+        foreach ($ultimosCalculos as $calculo) {
+            $mes = utf8_encode(strftime('%b', strtotime($calculo->calculoResumo->data))); // Obter o nome do mês abreviado
+            $meses[$mes] += number_format($calculo->valor, 2); // Adicionar o total do cálculo ao mês correspondente
+        }
+    // Array com os nomes dos meses em português e abreviados
+$nomesMesesPortugues = [
+    'Jan' => 'Jan',
+    'Feb' => 'Fev',
+    'Mar' => 'Mar',
+    'Apr' => 'Abr',
+    'May' => 'Mai',
+    'Jun' => 'Jun',
+    'Jul' => 'Jul',
+    'Aug' => 'Ago',
+    'Sep' => 'Set',
+    'Oct' => 'Out',
+    'Nov' => 'Nov',
+    'Dec' => 'Dez',
+];
+
+// Traduzir os nomes dos meses para português
+$mesesTraduzidos = [];
+foreach ($meses as $nomeIngles => $valor) {
+    if (isset($nomesMesesPortugues[$nomeIngles])) {
+        $mesesTraduzidos[$nomesMesesPortugues[$nomeIngles]] = $valor;
+    }
+}
+
+return response()->json($mesesTraduzidos);
+    }
 }

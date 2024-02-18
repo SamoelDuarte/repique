@@ -18,11 +18,8 @@ class WebhookController extends Controller
                 $evento = new Events();
                 $device = Device::first();
                 // dd($device);
-
+                $evento->sendMessagem($device->session,$calculo->user->phone,"Novo Cálculo da Gorjeta, Veja seu Valor!!!");
                 $evento->sendMessagem($device->session,$calculo->user->phone,"https://play.google.com/store/apps/details?id=br.com.repique");
-
-                
-
             } 
             $calculo->send = 0;
                 $calculo->update();
