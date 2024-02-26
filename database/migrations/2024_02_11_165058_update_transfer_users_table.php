@@ -29,7 +29,7 @@ return new class extends Migration
                     'name' => $colaborador->nome,
                     'area_id' => $areaId,
                     'parent_id' => $user->id,
-                    'email' => "paraiso@" . strtolower($colaborador->nome) . ".com",
+                    'email' => "paraiso@" . strtolower(preg_replace('/[^a-zA-Z]/', '', str_replace(' ', '', $colaborador->nome))) . ".com",
                     'pontuacao' => $colaborador->pontuacao,
                     'password' => Hash::make('senhaPadrao'), // Adiciona uma senha padrão
                 ]);
