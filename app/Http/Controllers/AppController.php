@@ -145,7 +145,6 @@ class AppController extends Controller
     public function getCalculos(Request $request)
     {
 
-
         // Encontrar o usuário com base no e-mail fornecido na solicitação
         $user = User::where('email', $request->email)->first();
 
@@ -161,7 +160,7 @@ class AppController extends Controller
                     $query->where('data', $request->data)
                         ->where('user_id', $user->id);
                 })->get();
-                $jsonArray = [];
+                $jsonArrayColaborador = [];
 
                 // Iterar sobre os resultados retornados
                 foreach ($calculos as $calculo) {
@@ -176,8 +175,12 @@ class AppController extends Controller
                     ];
 
                     // Adicionar o array do colaborador ao array principal
-                    $jsonArray[] = $colaborador;
+                    $jsonArrayColaborador[] = $colaborador;
                 }
+
+                $jsonArray =  array(
+                    'colaboradores' => $jsonArrayColaborador
+                ); 
                 // Faça algo com os cálculos encontrados, como retorná-los como resposta JSON
                 return response()->json($jsonArray);
             } else {
@@ -190,7 +193,7 @@ class AppController extends Controller
         }
     }
 
-    public function resumoData(Request $request)
+    public function resumoDataCalculo(Request $request)
     {
 
 
