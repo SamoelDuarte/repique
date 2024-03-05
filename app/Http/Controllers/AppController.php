@@ -204,7 +204,6 @@ class AppController extends Controller
 
             // Se o CalculoResumo existir, obter os cálculos associados a ele
             if ($calculoResumo) {
-                dd($calculoResumo);
                 $calculos = Calculo::whereHas('calculoResumo', function ($query) use ($request, $user) {
                     $query->where('data', $request->data)
                         ->where('user_id', $user->id);
