@@ -145,57 +145,6 @@ class AppController extends Controller
     public function getCalculos(Request $request)
     {
 
-        // Encontrar o usuário com base no e-mail fornecido na solicitação
-        $user = User::where('email', $request->email)->first();
-
-        // Se o usuário existir, encontrar o CalculoResumo com a data e o user_id fornecidos
-        if ($user) {
-            $calculoResumo = CalculoResumo::where('data', $request->data)
-                ->where('user_id', $user->id)
-                ->first();
-
-            // Se o CalculoResumo existir, obter os cálculos associados a ele
-            if ($calculoResumo) {
-                $calculos = Calculo::whereHas('calculoResumo', function ($query) use ($request, $user) {
-                    $query->where('data', $request->data)
-                        ->where('user_id', $user->id);
-                })->get();
-                $jsonArrayColaborador = [];
-
-                // Iterar sobre os resultados retornados
-                foreach ($calculos as $calculo) {
-                    // Criar um array associativo para cada cálculo
-                    $colaborador = [
-                        'id' => $calculo->id,
-                        'nome' => $calculo->user->name, // Você precisa acessar a relação user para obter o nome do usuário
-                        'area' => $calculo->user->area->nome, // Supondo que o usuário tenha um atributo 'area'
-                        'pontuacao' => $calculo->user->pontuacao, // Supondo que o usuário tenha um atributo 'pontuacao'
-                        'valor' => $calculo->valor,
-                        'data' => $request->data
-                    ];
-
-                    // Adicionar o array do colaborador ao array principal
-                    $jsonArrayColaborador[] = $colaborador;
-                }
-
-                $jsonArray =  array(
-                    'colaboradores' => $jsonArrayColaborador
-                ); 
-                // Faça algo com os cálculos encontrados, como retorná-los como resposta JSON
-                return response()->json($jsonArray);
-            } else {
-                // Se o CalculoResumo não existir, retorne uma resposta indicando que não foram encontrados cálculos para a data e o usuário fornecidos
-                return response()->json(['message' => 'Não foram encontrados cálculos para a data e o usuário fornecidos'], 404);
-            }
-        } else {
-            // Se o usuário não existir, retorne uma resposta indicando que o usuário não foi encontrado
-            return response()->json(['message' => 'Usuário não encontrado'], 404);
-        }
-    }
-
-    public function resumoDataCalculo(Request $request)
-    {
-
 
         // Encontrar o usuário com base no e-mail fornecido na solicitação
         $user = User::where('email', $request->email)->first();
@@ -241,7 +190,59 @@ class AppController extends Controller
         }
     }
 
-    
+    public function resumoDataCalculo(Request $request)
+    {
+
+
+        // Encontrar o usuário com base no e-mail fornecido na solicitação
+        $user = User::where('email', $request->email)->first();
+
+        // Se o usuário existir, encontrar o CalculoResumo com a data e o user_id fornecidos
+        if ($user) {
+            $calculoResumo = CalculoResumo::where('data', $request->data)
+                ->where('user_id', $user->id)
+                ->first();
+
+            // Se o CalculoResumo existir, obter os cálculos associados a ele
+            if ($calculoResumo) {
+                $calculos = Calculo::whereHas('calculoResumo', function ($query) use ($request, $user) {
+                    $query->where('data', $request->data)
+                        ->where('user_id', $user->id);
+                })->get();
+                $jsonArrayColaborador = [];
+
+                // Iterar sobre os resultados retornados
+                foreach ($calculos as $calculo) {
+                    // Criar um array associativo para cada cálculo
+                    $colaborador = [
+                        'id' => $calculo->id,
+                        'nome' => $calculo->user->name, // Você precisa acessar a relação user para obter o nome do usuário
+                        'area' => $calculo->user->area->nome, // Supondo que o usuário tenha um atributo 'area'
+                        'pontuacao' => $calculo->user->pontuacao, // Supondo que o usuário tenha um atributo 'pontuacao'
+                        'valor' => $calculo->valor,
+                        'data' => $request->data
+                    ];
+
+                    // Adicionar o array do colaborador ao array principal
+                    $jsonArrayColaborador[] = $colaborador;
+                }
+
+                $jsonArray = array(
+                    'colaborador' => $jsonArrayColaborador,
+                );
+                // Faça algo com os cálculos encontrados, como retorná-los como resposta JSON
+                return response()->json($jsonArray);
+            } else {
+                // Se o CalculoResumo não existir, retorne uma resposta indicando que não foram encontrados cálculos para a data e o usuário fornecidos
+                return response()->json(['message' => 'Não foram encontrados cálculos para a data e o usuário fornecidos'], 404);
+            }
+        } else {
+            // Se o usuário não existir, retorne uma resposta indicando que o usuário não foi encontrado
+            return response()->json(['message' => 'Usuário não encontrado'], 404);
+        }
+    }
+
+
 
     public function dadosOnda(Request $request)
     {
@@ -249,7 +250,7 @@ class AppController extends Controller
         $primeiroDiaAno = now()->startOfYear();
         // Obter a data de hoje
         $hoje = now();
-    
+
         // Inicializar o array com os valores de todos os meses do ano, com valor zero
         $meses = [
             utf8_encode(strftime('%b', mktime(0, 0, 0, 1, 1))) => 0, // JAN
@@ -265,7 +266,7 @@ class AppController extends Controller
             utf8_encode(strftime('%b', mktime(0, 0, 0, 11, 1))) => 0, // NOV
             utf8_encode(strftime('%b', mktime(0, 0, 0, 12, 1))) => 0, // DEZ
         ];
-    
+
         // Obter os últimos cálculos resumo filtrados pelo e-mail do usuário e restritos ao período de tempo especificado
         $ultimosCalculos = Calculo::with('user', 'calculoResumo')
             ->whereHas('user', function ($query) use ($request) {
@@ -276,13 +277,13 @@ class AppController extends Controller
             })
             ->orderBy('id', 'desc')
             ->get();
-    
+
         // Agrupar os cálculos resumo por mês e calcular o total para cada mês
         foreach ($ultimosCalculos as $calculo) {
             $mes = utf8_encode(strftime('%b', strtotime($calculo->calculoResumo->data))); // Obter o nome do mês abreviado
             $meses[$mes] += number_format($calculo->valor, 2); // Adicionar o total do cálculo ao mês correspondente
         }
-    
+
         // Array com os nomes dos meses em português e abreviados
         $nomesMesesPortugues = [
             'Jan' => 'Jan',
@@ -298,7 +299,7 @@ class AppController extends Controller
             'Nov' => 'Nov',
             'Dec' => 'Dez',
         ];
-    
+
         // Traduzir os nomes dos meses para português
         $mesesTraduzidos = [];
         foreach ($meses as $nomeIngles => $valor) {
@@ -306,13 +307,12 @@ class AppController extends Controller
                 $mesesTraduzidos[$nomesMesesPortugues[$nomeIngles]] = $valor;
             }
         }
-    
-        // Filtrar apenas os meses com valor
-    $mesesComValor = array_filter($mesesTraduzidos, function ($valor) {
-        return $valor > 0;
-    });
 
-    return response()->json($mesesComValor);
+        // Filtrar apenas os meses com valor
+        $mesesComValor = array_filter($mesesTraduzidos, function ($valor) {
+            return $valor > 0;
+        });
+
+        return response()->json($mesesComValor);
     }
-    
 }
