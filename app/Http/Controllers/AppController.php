@@ -211,6 +211,18 @@ class AppController extends Controller
                 })->get();
                 $jsonArrayColaborador = [];
 
+                $calculoResumoArray = array(
+                    "total_gorjeta" => $calculoResumo->total_gorjeta,
+                    "desconto" => $calculoResumo->desconto,
+                    "restante" => $calculoResumo->restante,
+                    "total_salao" => $calculoResumo->total_salao,
+                    "total_ponto_salao" => $calculoResumo->total_ponto_salao,
+                    "cada_ponto_salao" =>$calculoResumo->cada_ponto_salao,
+                    "total_retaguarda" => $calculoResumo->total_retaguarda,
+                    "total_ponto_retaguarda" => $calculoResumo->total_ponto_retaguarda,
+                    "cada_ponto_retaguarda" =>$calculoResumo->cada_ponto_retaguarda
+                );
+
                 // Iterar sobre os resultados retornados
                 foreach ($calculos as $calculo) {
                     // Criar um array associativo para cada cálculo
@@ -229,6 +241,7 @@ class AppController extends Controller
 
                 $jsonArray = array(
                     'colaborador' => $jsonArrayColaborador,
+                    'resumo' =>  $calculoResumoArray
                 );
 
 
