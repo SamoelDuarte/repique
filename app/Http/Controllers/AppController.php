@@ -210,7 +210,7 @@ class AppController extends Controller
                 })->get();
                 $jsonArrayColaborador = [];
 
-                $calculoResumoArray = array(
+                $calculoResumoArray[] = array(
                     "total_gorjeta" => $calculoResumo->total_gorjeta,
                     "desconto" => $calculoResumo->desconto,
                     "restante" => $calculoResumo->restante,
