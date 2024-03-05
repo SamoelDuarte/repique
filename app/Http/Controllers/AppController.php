@@ -193,7 +193,6 @@ class AppController extends Controller
     public function resumoDataCalculo(Request $request)
     {
 
-
         // Encontrar o usuário com base no e-mail fornecido na solicitação
         $user = User::where('email', $request->email)->first();
 
@@ -205,6 +204,7 @@ class AppController extends Controller
 
             // Se o CalculoResumo existir, obter os cálculos associados a ele
             if ($calculoResumo) {
+                dd($calculoResumo);
                 $calculos = Calculo::whereHas('calculoResumo', function ($query) use ($request, $user) {
                     $query->where('data', $request->data)
                         ->where('user_id', $user->id);
@@ -230,6 +230,8 @@ class AppController extends Controller
                 $jsonArray = array(
                     'colaborador' => $jsonArrayColaborador,
                 );
+
+
                 // Faça algo com os cálculos encontrados, como retorná-los como resposta JSON
                 return response()->json($jsonArray);
             } else {
@@ -241,9 +243,6 @@ class AppController extends Controller
             return response()->json(['message' => 'Usuário não encontrado'], 404);
         }
     }
-
-
-
     public function dadosOnda(Request $request)
     {
         // Obter o primeiro dia do ano atual
