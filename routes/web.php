@@ -58,6 +58,7 @@ Route::prefix('/app')->controller(AppController::class)->group(function () {
     Route::post('/retorna_ultimos_calculos_repique', 'ultimosCalculosRepique');
     Route::post('/retorna_calculo_onda', 'dadosOnda');
     Route::post('/retorna_calculo_resumo_data', 'resumoDataCalculo');
+    Route::post('/deleta_calculo', 'deletaCalculo');
 });
 
 

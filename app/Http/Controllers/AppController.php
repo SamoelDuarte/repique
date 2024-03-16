@@ -216,10 +216,10 @@ class AppController extends Controller
                     "restante" => $calculoResumo->restante,
                     "total_salao" => $calculoResumo->total_salao,
                     "total_ponto_salao" => $calculoResumo->total_ponto_salao,
-                    "cada_ponto_salao" =>$calculoResumo->cada_ponto_salao,
+                    "cada_ponto_salao" => $calculoResumo->cada_ponto_salao,
                     "total_retaguarda" => $calculoResumo->total_retaguarda,
                     "total_ponto_retaguarda" => $calculoResumo->total_ponto_retaguarda,
-                    "cada_ponto_retaguarda" =>$calculoResumo->cada_ponto_retaguarda
+                    "cada_ponto_retaguarda" => $calculoResumo->cada_ponto_retaguarda
                 );
 
                 // Iterar sobre os resultados retornados
@@ -325,5 +325,29 @@ class AppController extends Controller
         });
 
         return response()->json($mesesComValor);
+    }
+
+    public function deletaCalculo(Request $request)
+    {
+        // Encontrar o usuário com base no e-mail fornecido na solicitação
+        $user = User::where('email', $request->email)->first();
+
+        // Verificar se o usuário foi encontrado
+        if ($user) {
+              // Deletar os cálculos associados ao cálculo resumo
+              Calculo::whereHas('calculoResumo', function ($query) use ($user, $request) {
+                $query->where('user_id', $user->id)
+                    ->where('data', $request->data);
+            })->delete();
+            // Deletar os cálculos e o cálculo resumo para o usuário e data especificados
+            CalculoResumo::where('user_id', $user->id)
+                ->where('data', $request->data)
+                ->delete();
+
+
+            return response()->json(['message' => 'Cálculos deletados com sucesso'], 200);
+        } else {
+            return response()->json(['message' => 'Usuário não encontrado'], 404);
+        }
     }
 }
