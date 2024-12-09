@@ -4,6 +4,7 @@ use App\Http\Controllers\Utils;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 class UpdateUsersTable extends Migration
@@ -11,10 +12,21 @@ class UpdateUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            // Remover colunas não necessárias
-            $table->dropColumn(['email_verified_at', 'usuario_id', 'status', 'image', 'remember_token']);
-
-            // Adicionar novas colunas
+            // Verifica a existência antes de remover
+            if (Schema::hasColumn('users', 'email_verified_at')) {
+                $table->dropColumn('email_verified_at');
+            }
+            if (Schema::hasColumn('users', 'status')) {
+                $table->dropColumn('status');
+            }
+            if (Schema::hasColumn('users', 'image')) {
+                $table->dropColumn('image');
+            }
+            if (Schema::hasColumn('users', 'remember_token')) {
+                $table->dropColumn('remember_token');
+            }
+        
+            // Adicionar novas colunas, se não existirem
             if (!Schema::hasColumn('users', 'salt')) {
                 $table->string('salt', 255)->nullable();
             }
@@ -30,26 +42,25 @@ class UpdateUsersTable extends Migration
             if (!Schema::hasColumn('users', 'active')) {
                 $table->boolean('active')->default(true);
             }
-
-            // Verifica se a coluna area_id não existe antes de adicioná-la
+        
+            // Adicionando area_id e parent_id
             if (!Schema::hasColumn('users', 'area_id')) {
-                // Adiciona a coluna area_id
                 $table->unsignedBigInteger('area_id')->nullable()->after('name');
-
-                // Define a chave estrangeira que referencia a tabela areas
                 $table->foreign('area_id')->references('id')->on('areas')->onDelete('set null');
             }
-
-            // Adicionando a coluna parent_id
             if (!Schema::hasColumn('users', 'parent_id')) {
-                $table->unsignedBigInteger('parent_id')->nullable()->after('id'); // Adiciona a coluna parent_id após a coluna id
-
-                // Define parent_id como chave estrangeira referenciando o próprio id na tabela users
+                $table->unsignedBigInteger('parent_id')->nullable()->after('id');
                 $table->foreign('parent_id')->references('id')->on('users')->onDelete('set null');
             }
-
-           
         });
+        
+        User::create([
+            'name' => 'Admin', // Adicionando o campo obrigatório 'name'
+            'email' => 'admin@admin',
+            'password' => Hash::make('123'),
+            'role' => 'admin',
+            'active' => true,
+        ]);
 
        
     }
