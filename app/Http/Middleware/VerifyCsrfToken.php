@@ -12,14 +12,6 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-       '/events',
-       '/app/retorna_ultimos_calculos',
-       '/app/retorna_colaboradores',
-       '/app/insere_calculo',
-       '/app/retorna_calculo_admin',
-       '/app/retorna_ultimos_calculos_repique',
-       '/app/retorna_calculo_onda',
-       '/app/retorna_calculo_resumo_data',
-       '/app/deleta_calculo'
+        //
     ];
 }

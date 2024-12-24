@@ -14,9 +14,10 @@ class Utils extends Controller
         return $hashed;
     }
 
-    static function passwordIsValid($typedPassword, $storedPassword, $salt)
-    {
-        return Hash::check($typedPassword . $salt, $storedPassword);
+    static function passwordIsValid($typedPassword, $storedPassword)
+    {   
+        
+        return Hash::check($typedPassword, $storedPassword);
     }
 
     static function createPasswordSalt()

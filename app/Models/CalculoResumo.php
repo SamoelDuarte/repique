@@ -11,7 +11,6 @@ class CalculoResumo extends Model
     public $timestamps = false; // Se não tiver colunas de created_at e updated_at
 
     protected $fillable = [
-        'user_id',
         'total_gorjeta',
         'desconto',
         'restante',
@@ -23,16 +22,18 @@ class CalculoResumo extends Model
         'cada_ponto_retaguarda',
         'data'
     ];
-
-    // Relacionamento com User
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
+    protected $dates = ['data'];
+    
 
     public function calculos()
     {
         return $this->hasMany(Calculo::class, 'calculoresumo_id');
+    }
+
+
+    public function getDataAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('d/m/Y');
     }
 
     

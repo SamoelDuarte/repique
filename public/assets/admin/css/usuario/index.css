@@ -1,0 +1,93 @@
+  /* Responsividade geral */
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.user-container {
+    padding: 16px;
+}
+
+h1 {
+    font-size: 1.5em;
+    margin-bottom: 16px;
+    color: #5A3B5D;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.user-table th,
+.user-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.user-table th {
+    background-color: #FEDC2A;
+    color: #5A3B5D;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.user-table td {
+    font-size: 0.875rem;
+    border-bottom: 1px solid #EEE;
+}
+
+.user-table tr:last-child td {
+    border-bottom: none;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #FFF;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.btn-edit {
+    background-color: #4CAF50;
+}
+
+.btn-delete {
+    background-color: #E53935;
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 600px) {
+    .user-container {
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 1.2em;
+        margin-bottom: 12px;
+    }
+
+    .user-table th,
+    .user-table td {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+}

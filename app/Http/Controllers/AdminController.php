@@ -23,15 +23,15 @@ class AdminController extends Controller
             'email' => 'bail|required|email|max:255',
             'password' => 'bail|required'
         ]);
-
+      
         $user = User::where('email', $request->email)->first();
-        // dd($user);
 
         if (!$user) {
             return back()->withErrors(['email' => 'E-mail Não Consta no Sistema.'])->withInput();
         }
-
-        if (!Utils::passwordIsValid($request->password, $user->password, $user->salt)) {
+    
+        if (!Utils::passwordIsValid($request->password, $user->password)) {
+            dd('aki');
             return back()->withErrors(['password' => 'Senha Inválida'])->withInput();
         }
 
@@ -39,12 +39,11 @@ class AdminController extends Controller
             return back();
         }
 
-
         session([
             'authenticated' => true,
             'userData' => $user
         ]);
 
-        return redirect('/dispositivo');
+        return redirect('/admin/calculo');
     }
 }

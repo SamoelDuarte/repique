@@ -2,62 +2,62 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class User extends Authenticatable
 {
-    use HasFactory;
-    protected $table = 'users';
-    protected $appends = [
-        'short_name',
-        'full_name',
-        'picture_path',
-    ];
+    use HasFactory, Notifiable;
+
+    /**
+     * Os atributos que podem ser atribuídos em massa.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'first_name',
-        'last_name',
         'name',
         'email',
         'password',
-        'salt',
         'phone',
+        'pontuacao',
         'role',
         'active',
-        'picture',
-
+        'deleted',
+        'area_id',
     ];
-    protected $hidden = ['password', 'salt'];
 
+    /**
+     * Os atributos que devem ser ocultados nos arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
+    /**
+     * Os atributos que devem ser convertidos em tipos nativos.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'active' => 'boolean',
+        'deleted' => 'boolean',
+    ];
 
-    public function getShortNameAttribute()
-    {
-        $exclude = [' de ', ' da ', ' do ', ' dos ', ' e '];
-        $nameBrokenIntoParts = explode(" ", str_replace($exclude, " ", $this->fist_name . $this->last_name));
-        if (count($nameBrokenIntoParts) > 1) {
-            return $nameBrokenIntoParts[0] . " " . $nameBrokenIntoParts[count($nameBrokenIntoParts) - 1];
-        }
-        return $nameBrokenIntoParts[0];
-    }
-
-    public function getFullNameAttribute()
-    {
-
-        return $this->first_name . ' ' . $this->last_name;
-    }
-
-    public function getPicturePathAttribute()
-    {
-        return empty($this->picture) ? '/assets/images/no-photo.png' : '/assets/images/users/' . $this->picture;
-    }
+    /**
+     * Relacionamento: Um usuário pode pertencer a uma área.
+     */
     public function area()
     {
-        return $this->belongsTo(Area::class, 'area_id');
+        return $this->belongsTo(Area::class);
     }
-    public function calculosResumo()
-    {
-        return $this->hasMany(CalculoResumo::class, 'user_id');
-    }
+
+    /**
+     * Mutator para garantir que a senha seja sempre criptografada.
+     *
+     * @param string $value
+     */
 }
