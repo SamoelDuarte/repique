@@ -31,7 +31,6 @@ class AdminController extends Controller
         }
     
         if (!Utils::passwordIsValid($request->password, $user->password)) {
-            dd('aki');
             return back()->withErrors(['password' => 'Senha Inválida'])->withInput();
         }
 
