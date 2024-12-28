@@ -12,14 +12,14 @@ class CalculoController extends Controller
     public function index()
     {
         $calculos = CalculoResumo::orderBy('id', 'desc')->get();
-    
-       
-    
-       
-        return view('admin.calculo.index',compact('calculos'));
+
+
+
+
+        return view('admin.calculo.index', compact('calculos'));
     }
- 
-    
+
+
 
     public function insert()
     {
@@ -28,6 +28,8 @@ class CalculoController extends Controller
     }
     public function store(Request $request)
     {
+
+
         // Obter o total da gorjeta do request e converter para float
         $totalGorjeta = str_replace(['.', ','], ['', '.'], $request->totalGorjeta);
 
@@ -41,12 +43,16 @@ class CalculoController extends Controller
         $valorSalao = round($restante * 0.60, 2);
         $valorRetaguarda = round($restante * 0.40, 2);
 
-        // Calcular os valores por ponto
-        $totalPontoSalao = 15; // Exemplo de valor
-        $totalPontoRetaguarda = 15; // Exemplo de valor
+        // Obter os funcionários selecionados
+        $funcionarios = User::whereIn('id', $request->funcionarios)->get();
 
-        $cadaPontoSalao = round($valorSalao / $totalPontoSalao, 2);
-        $cadaPontoRetaguarda = round($valorRetaguarda / $totalPontoRetaguarda, 2);
+        // Separar pontuações de salão e retaguarda
+        $totalPontoSalao = $funcionarios->where('area_id', 1)->sum('pontuacao');
+        $totalPontoRetaguarda = $funcionarios->where('area_id', 2)->sum('pontuacao');
+        // dd($totalPontoSalao);
+        // Calcular os valores por ponto
+        $cadaPontoSalao = $totalPontoSalao > 0 ? round($valorSalao / $totalPontoSalao, 2) : 0;
+        $cadaPontoRetaguarda = $totalPontoRetaguarda > 0 ? round($valorRetaguarda / $totalPontoRetaguarda, 2) : 0;
 
         // Criar uma nova instância de CalculoResumo
         $calculoResumo = CalculoResumo::create([
@@ -62,9 +68,6 @@ class CalculoController extends Controller
             'cada_ponto_retaguarda' => $cadaPontoRetaguarda,
             'data' => $request->dataCalculo, // Data enviada no formulário
         ]);
-
-        // Obter os funcionários selecionados
-        $funcionarios = User::whereIn('id', $request->funcionarios)->get();
 
         // Inserir registros no modelo Calculo
         foreach ($funcionarios as $funcionario) {
@@ -87,6 +90,24 @@ class CalculoController extends Controller
         return redirect()->route('calculo.show', $calculoResumo->id)
             ->with('success', 'Cálculo realizado com sucesso!');
     }
+
+    public function destroy($id)
+    {
+        // Buscar o CalculoResumo pelo ID
+        $calculoResumo = CalculoResumo::findOrFail($id);
+
+        // Deletar todos os registros de Calculo associados ao CalculoResumo
+        Calculo::where('calculoresumo_id', $calculoResumo->id)->delete();
+
+        // Deletar o CalculoResumo
+        $calculoResumo->delete();
+
+        // Redirecionar para a lista de cálculos ou página desejada com mensagem de sucesso
+        return redirect()->route('calculo.index')
+            ->with('success', 'Cálculo e Resumo excluídos com sucesso!');
+    }
+
+
 
     public function show($id)
     {
