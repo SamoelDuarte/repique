@@ -69,12 +69,9 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
             'area_id' => 'required|exists:areas,id',  // Validar se o ID da área existe
             'pontuacao' => 'required|numeric',  // Aqui você deve garantir que seja numérico
             'active' => 'required|boolean',
-            'phone' => 'required|string',
         ]);
 
         $user = new User();
