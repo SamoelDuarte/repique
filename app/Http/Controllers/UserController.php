@@ -35,12 +35,9 @@ class UserController extends Controller
         // Validação dos dados
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8', // Senha é opcional na atualização
             'area_id' => 'required|exists:areas,id', // Certificando-se de que a área existe
             'pontuacao' => 'required|numeric',
             'active' => 'required|boolean',
-            'phone' => 'required|string',
         ]);
 
         // Recuperando o usuário pelo ID
