@@ -107,8 +107,6 @@ class CalculoController extends Controller
             ->with('success', 'Cálculo e Resumo excluídos com sucesso!');
     }
 
-
-
     public function show($id)
     {
         // Buscar o cálculo resumo pelo ID
@@ -117,10 +115,7 @@ class CalculoController extends Controller
         // Retornar a visualização com os dados
         return view('admin.calculo.show', compact('calculoResumo'));
     }
-
-
-
-
+    
     public function separaTotalPonto($funcionarios)
     {
         $totalPontosPorArea = [];

@@ -8,11 +8,11 @@
 
 @section('content')
     <div class="user-container">
-        @section('breadcrumb', 'Cálculos')
+    @section('breadcrumb', 'Cálculos')
 
-        <!-- Botão para adicionar cálculo -->
-        <a href="{{ route('calculo.insert') }}" class="btn btn-success mb-3">Adicionar Cálculo</a>
-
+    <!-- Botão para adicionar cálculo -->
+    <a href="{{ route('calculo.insert') }}" class="btn btn-success mb-3">Adicionar Cálculo</a>
+    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
         <table class="user-table" id="table-users">
             <thead>
                 <tr>
@@ -28,11 +28,14 @@
                         <td>{{ $calculo->total_gorjeta }}</td>
                         <td>
                             <div class="">
-                                <a href="{{ route('calculo.show', $calculo->id) }}" class="btn btn-sm btn-warning">Ver</a>
-                                <form action="{{ route('calculo.destroy', $calculo->id) }}" method="POST" style="display: inline;">
+                                <a href="{{ route('calculo.show', $calculo->id) }}"
+                                    class="btn btn-sm btn-warning">Ver</a>
+                                <form action="{{ route('calculo.destroy', $calculo->id) }}" method="POST"
+                                    style="display: inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Deseja excluir este cálculo?')">Excluir</button>
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Deseja excluir este cálculo?')">Excluir</button>
                                 </form>
                             </div>
                         </td>
@@ -41,8 +44,9 @@
             </tbody>
         </table>
     </div>
+</div>
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('/assets/admin/js/calculo/index.js') }}"></script>
+<script src="{{ asset('/assets/admin/js/calculo/index.js') }}"></script>
 @endsection

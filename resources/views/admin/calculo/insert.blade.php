@@ -24,6 +24,7 @@
         <!-- Lista de funcionários trabalhando -->
         <div class="form-group">
             <label>Funcionários Trabalhando</label>
+            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -48,6 +49,7 @@
                     @endforeach
                 </tbody>
             </table>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Salvar Cálculo</button>

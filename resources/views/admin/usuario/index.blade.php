@@ -4,6 +4,7 @@
 
 @section('css')
     <link href="{{ asset('/assets/admin/css/usuario/index.css') }}" rel="stylesheet">
+  
 @endsection
 
 @section('content')
@@ -13,19 +14,22 @@
     <!-- Botão para adicionar usuário -->
     <button id="btn-add-user" class="btn btn-success mb-3">Adicionar Usuário</button>
 
-    <table class="user-table" id="table-users">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Área</th>
-                <th>Ponto</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Os dados dos usuários serão inseridos via AJAX -->
-        </tbody>
-    </table>
+    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+        <table class="user-table" id="table-users">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Área</th>
+                    <th>Ponto</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Os dados dos usuários serão inseridos via AJAX -->
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
 <!-- Modal de Adicionar/Editar Usuário -->
@@ -47,11 +51,11 @@
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" >
+                        <input type="email" class="form-control" id="email" name="email">
                     </div>
                     <div class="form-group">
                         <label for="name">Senha</label>
-                        <input type="text" class="form-control title-case" id="password" name="password" >
+                        <input type="text" class="form-control title-case" id="password" name="password">
                     </div>
                     <div class="form-group">
                         <label for="role">Área</label>
@@ -75,7 +79,7 @@
                     </div>
                     <div class="form-group">
                         <label for="phone">Telefone</label>
-                        <input type="text" class="form-control telefone" id="phone" name="phone" >
+                        <input type="text" class="form-control telefone" id="phone" name="phone">
                     </div>
                 </form>
             </div>

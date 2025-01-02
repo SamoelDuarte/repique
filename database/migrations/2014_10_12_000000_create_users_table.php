@@ -40,6 +40,15 @@ class CreateUsersTable extends Migration
             'role' => 'admin',
             'active' => true,
         ]);
+
+        for ($i = 1; $i <= 20; $i++) {
+            User::create([
+                'name' => 'user' . $i,
+                'pontuacao' => $i % 2 == 0 ? 10 : 5, // Alterna entre 10 e 5
+                'area_id' => $i % 2 == 0 ? 1 : 2,  // Alterna entre 1 e 2
+            ]);
+        }
+        
        
     }
 

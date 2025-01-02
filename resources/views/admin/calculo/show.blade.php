@@ -6,7 +6,7 @@
 <div class="container">
     <h1>Resumo do Cálculo</h1>
 
-    <div class="table-responsive">
+    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
         <table class="user-table table-bordered">
             <thead>
                 <tr>
@@ -53,6 +53,7 @@
     
 
     <h2>Detalhes dos Funcionários</h2>
+    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
     <table class="user-table">
         <thead>
             <tr>
@@ -73,5 +74,6 @@
             @endforeach
         </tbody>
     </table>
+    </div>
 </div>
 @endsection
