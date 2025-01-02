@@ -1,12 +1,15 @@
 @extends('admin.layout.app')
 @section('css')
     <link href="{{ asset('/assets/admin/css/usuario/index.css') }}" rel="stylesheet">
+    <style>
+        
+    </style>
 @endsection
 @section('content')
-    <div class="container">
+    <div class="container" style="max-height: 500px; overflow-y: auto;">
         <h1>Resumo do Cálculo</h1>
 
-        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+        <div class="table-responsive" >
             <table class="user-table table-bordered">
                 <thead>
                     <tr>
@@ -36,12 +39,20 @@
                         <td>{{ number_format($calculoResumo->cada_ponto_salao, 2, ',', '.') }}</td>
                     </tr>
                     <tr>
+                        <td>Total Ponto Salão</td>
+                        <td>{{ number_format($calculoResumo->total_ponto_salao, 2, ',', '.') }}</td>
+                    </tr>
+                    <tr>
                         <td>Total Retaguarda</td>
                         <td>{{ number_format($calculoResumo->total_retaguarda, 2, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <td>Valor por Ponto Retaguarda</td>
                         <td>{{ number_format($calculoResumo->cada_ponto_retaguarda, 2, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Ponto retaguarda</td>
+                        <td>{{ number_format($calculoResumo->total_ponto_retaguarda, 2, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <td>Data</td>
