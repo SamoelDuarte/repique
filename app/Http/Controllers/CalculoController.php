@@ -23,7 +23,7 @@ class CalculoController extends Controller
 
     public function insert()
     {
-        $funcionariosTrabalhando =  User::with('area')->where('id', '>', '1')->get();
+        $funcionariosTrabalhando =  User::with('area')->where(['role' => 'user','deleted' => '0'])->get();
         return view('admin.calculo.insert', compact('funcionariosTrabalhando'));
     }
     public function store(Request $request)
