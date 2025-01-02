@@ -21,38 +21,42 @@
             <input type="text" step="0.01" name="totalGorjeta" id="totalGorjeta" class="form-control money" required placeholder="Digite o total da gorjeta">
         </div>
 
-        <!-- Lista de funcionários trabalhando -->
         <div class="form-group">
+               <!-- O botão está fora do contêiner da tabela -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Salvar Cálculo</button>
+        </div>
             <label>Funcionários Trabalhando</label>
             <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nome</th>
-                        <th>Área</th>
-                        <th>Ponto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($funcionariosTrabalhando as $funcionario)
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="funcionarios[]" value="{{ $funcionario->id }}" id="funcionario_{{ $funcionario->id }}" class="form-check-input">
-                        </td>
-                        <td>
-                            <label for="funcionario_{{ $funcionario->id }}">{{ $funcionario->name }}</label>
-                        </td>
-                        <td>{{ $funcionario->area->nome }}</td> <!-- Exemplo de campo "área" -->
-                        <td>{{ $funcionario->pontuacao }}</td> <!-- Exemplo de campo "ponto" -->
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Área</th>
+                            <th>Ponto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($funcionariosTrabalhando as $funcionario)
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="funcionarios[]" value="{{ $funcionario->id }}" id="funcionario_{{ $funcionario->id }}" class="form-check-input">
+                            </td>
+                            <td>
+                                <label for="funcionario_{{ $funcionario->id }}">{{ $funcionario->name }}</label>
+                            </td>
+                            <td>{{ $funcionario->area->nome }}</td>
+                            <td>{{ $funcionario->pontuacao }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <button type="submit" class="btn btn-primary">Salvar Cálculo</button>
+        
+     
+        
     </form>
 </div>
 @endsection
